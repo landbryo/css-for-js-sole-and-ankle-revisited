@@ -1,18 +1,14 @@
-import React from 'react';
-import styled from 'styled-components/macro';
+import React from "react";
+import styled from "styled-components/macro";
 
-import { COLORS, WEIGHTS } from '../../constants';
-import Logo from '../Logo';
-import SuperHeader from '../SuperHeader';
-import MobileMenu from '../MobileMenu';
+import { QUERIES } from "../../constants";
+import Logo from "../Logo";
+import SuperHeader from "../SuperHeader";
+import MobileMenu from "../MobileMenu";
+import Icon from "../Icon";
 
 const Header = () => {
   const [showMobileMenu, setShowMobileMenu] = React.useState(false);
-
-  // For our mobile hamburger menu, we'll want to use a button
-  // with an onClick handler, something like this:
-  //
-  // <button onClick={() => setShowMobileMenu(true)}>
 
   return (
     <header>
@@ -24,12 +20,20 @@ const Header = () => {
         <Nav>
           <NavLink href="/sale">Sale</NavLink>
           <NavLink href="/new">New&nbsp;Releases</NavLink>
-          <NavLink href="/men">Men</NavLink>
-          <NavLink href="/women">Women</NavLink>
+          <NavLink href="/men">Men's Clothing</NavLink>
+          <NavLink href="/women">Women's Clothing</NavLink>
           <NavLink href="/kids">Kids</NavLink>
           <NavLink href="/collections">Collections</NavLink>
         </Nav>
-        <Side />
+        <Side>
+          <MobileIconsWrapper>
+            <Icon id="shopping-bag" strokeWidth={2} size={24} />
+            <Icon id="search" strokeWidth={2} size={24} />
+            <MenuButton onClick={() => setShowMobileMenu(true)}>
+              <Icon id="menu" strokeWidth={2} size={24} />
+            </MenuButton>
+          </MobileIconsWrapper>
+        </Side>
       </MainHeader>
 
       <MobileMenu
@@ -40,18 +44,51 @@ const Header = () => {
   );
 };
 
+const MenuButton = styled.button`
+  background: transparent;
+  border: none;
+  cursor: pointer;
+`;
+
+const MobileIconsWrapper = styled.div`
+  display: none;
+
+  @media ${QUERIES.tabletMax} {
+    display: flex;
+    gap: 32px;
+    justify-content: flex-end;
+  }
+
+  @media ${QUERIES.phoneMax} {
+    gap: 16px;
+  }
+`;
+
 const MainHeader = styled.div`
   display: flex;
   align-items: baseline;
   padding: 18px 32px;
-  height: 72px;
-  border-bottom: 1px solid ${COLORS.gray[300]};
+  border-bottom: 1px solid var(--color-gray-300);
+  overflow-x: auto;
+
+  @media ${QUERIES.tabletMax} {
+    align-items: center;
+    border-top: 4px solid var(--color-gray-900);
+  }
+
+  @media ${QUERIES.tabletMax} {
+    padding: 16px 24px;
+  }
 `;
 
 const Nav = styled.nav`
   display: flex;
-  gap: 48px;
-  margin: 0px 48px;
+  gap: clamp(1.2rem, 7.1vw - 3rem, 3rem);
+  margin: 0 48px;
+
+  @media ${QUERIES.tabletMax} {
+    display: none;
+  }
 `;
 
 const Side = styled.div`
@@ -62,11 +99,12 @@ const NavLink = styled.a`
   font-size: 1.125rem;
   text-transform: uppercase;
   text-decoration: none;
-  color: ${COLORS.gray[900]};
-  font-weight: ${WEIGHTS.medium};
+  color: var(--color-gray-900);
+  font-weight: var(--weight-medium);
+  white-space: nowrap;
 
   &:first-of-type {
-    color: ${COLORS.secondary};
+    color: var(--color-secondary);
   }
 `;
 
